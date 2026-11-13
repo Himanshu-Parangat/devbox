@@ -1,0 +1,24 @@
+---@brief
+---
+--- https://github.com/redhat-developer/yaml-language-server
+---
+--- `yaml-language-server` can be installed via `yarn`:
+--- ```sh
+--- yarn global add yaml-language-server
+--- ```
+---
+
+
+---@type vim.lsp.Config
+return {
+  cmd = { 'yaml-language-server', '--stdio' },
+  -- filetypes = { 'yaml', 'yaml.docker-compose', 'yaml.gitlab', 'yaml.helm-values' },
+  filetypes = { 'yaml' },
+  root_markers = { '.git' },
+  settings = {
+    -- https://github.com/redhat-developer/vscode-redhat-telemetry#how-to-disable-telemetry-reporting
+    redhat = { telemetry = { enabled = false } },
+    -- formatting disabled by default in yaml-language-server; enable it
+    yaml = { format = { enable = true } },
+  },
+}

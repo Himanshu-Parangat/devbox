@@ -1,0 +1,6 @@
+require("config.options")
+require("config.mappings")
+require("config.highlightGroups")
+require("config.bootstrap")
+require("config.lsp")
+require("config.diagnostics")
