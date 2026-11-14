@@ -17,3 +17,16 @@ vim.opt.tabstop = 2                       -- Set tab display width to 2 spaces
 vim.opt.shiftwidth = 2                    -- Set indentation width to 2 spaces
 vim.opt.softtabstop = 2                   -- Make Tab/Backspace behave like 2 spaces
 vim.opt.smartindent = true                -- Enable automatic smart indentation
+
+vim.opt.clipboard = ""
+vim.g.clipboard = {
+  name = 'OSC 52',
+  copy = {
+    ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+    -- ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+  },
+  paste = {
+    ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+    -- ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+  },
+}
