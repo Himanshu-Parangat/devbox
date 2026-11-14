@@ -7,7 +7,7 @@ return {
   opts = {
     -- We're defining every mapping ourselves, so start from an empty preset
     keymap = {
-      preset = 'none',
+      preset        = 'none',
 
       -- Manually open the menu / toggle docs
       ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
@@ -15,29 +15,29 @@ return {
       -- Close the menu. <C-[> is the same keycode as <Esc> in a terminal,
       -- so this also means Esc will close the menu (then fall back to
       -- normal Esc behavior, i.e. leave insert mode).
-      ['<C-e>']  = { 'hide', 'fallback' },
-      ['<C-[>']  = { 'hide', 'fallback' },
+      ['<C-e>']     = { 'hide', 'fallback' },
+      ['<C-[>']     = { 'hide', 'fallback' },
 
       -- Enter ONLY accepts when the menu is open & an item is selected.
       -- If the menu isn't open, it falls back to a normal newline.
-      ['<CR>'] = { 'accept', 'fallback' },
+      ['<CR>']      = { 'accept', 'fallback' },
 
       -- Move the selection up/down while menu is open
-      ['<C-n>'] = { 'select_next', 'fallback' },
-      ['<C-p>'] = { 'select_prev', 'fallback' },
-      ['<Up>']   = { 'select_prev', 'fallback' },
-      ['<Down>'] = { 'select_next', 'fallback' },
+      ['<C-n>']     = { 'select_next', 'fallback' },
+      ['<C-p>']     = { 'select_prev', 'fallback' },
+      ['<Up>']      = { 'select_prev', 'fallback' },
+      ['<Down>']    = { 'select_next', 'fallback' },
 
       -- Tab / Shift-Tab: ONLY jump through snippet placeholders.
       -- They do nothing to the completion menu itself.
-      ['<Tab>']   = { 'snippet_forward', 'fallback' },
-      ['<S-Tab>'] = { 'snippet_backward', 'fallback' },
+      ['<Tab>']     = { 'snippet_forward', 'fallback' },
+      ['<S-Tab>']   = { 'snippet_backward', 'fallback' },
 
       -- optional: scroll docs
-      ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
-      ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
+      ['<C-b>']     = { 'scroll_documentation_up', 'fallback' },
+      ['<C-f>']     = { 'scroll_documentation_down', 'fallback' },
 
-      ['<C-k>'] = { 'show_signature', 'hide_signature', 'fallback' },
+      ['<C-k>']     = { 'show_signature', 'hide_signature', 'fallback' },
     },
 
     appearance = {
@@ -60,7 +60,7 @@ return {
         draw = {
           columns = {
             { 'kind_icon' },
-            { 'label', 'label_description', gap = 1 },
+            { 'label',      'label_description', gap = 1 },
             { 'source_name' },
           },
           components = {
@@ -76,14 +76,35 @@ return {
       documentation = { auto_show = true },
     },
 
+
     sources = {
       default = { 'lsp', 'path', 'snippets', 'buffer' },
+
+      per_filetype = {
+        sql = { 'snippets', 'dadbod', 'buffer' },
+        mysql = { 'snippets', 'dadbod', 'buffer' },
+        plsql = { 'snippets', 'dadbod', 'buffer' },
+      },
+
+      providers = {
+        dadbod = {
+          name = 'DB',
+          module = 'vim_dadbod_completion.blink',
+          transform_items = function(_, items)
+            for _, item in ipairs(items) do
+              item.labelDetails = nil
+              item.detail = nil
+            end
+            return items
+          end,
+        },
+      }
     },
 
     fuzzy = { implementation = 'prefer_rust_with_warning' },
   },
   opts_extend = { 'sources.default' },
-    config = function(_, opts)
+  config = function(_, opts)
     require('blink.cmp').setup(opts)
 
     -- Headless (container build): block until the prebuilt binary is downloaded
